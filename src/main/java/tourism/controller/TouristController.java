@@ -17,7 +17,7 @@ public class TouristController {
     private final HandlerMapping resourceHandlerMapping;
 
     public TouristController(TouristService touristService, @Qualifier("resourceHandlerMapping") HandlerMapping resourceHandlerMapping){
-    this.touristService = touristService;
+        this.touristService = touristService;
         this.resourceHandlerMapping = resourceHandlerMapping;
     }
 
@@ -44,9 +44,9 @@ public class TouristController {
 
     //Opdaterer en attraktion. (Post metoden)
     @PostMapping("/update")
-    public ResponseEntity<String> updateAttraction(@RequestParam String name, @RequestParam String updateDesc){
-    boolean updated = touristService.updateAttraction(name, updateDesc);
-    return updated ? ResponseEntity.ok("Attraktionen blev opdateret.") : ResponseEntity.notFound().build();
+    public ResponseEntity<String> updateAttraction(@RequestBody TouristAttraction attraction) {
+        boolean updated = touristService.updateAttraction(attraction.getName(), attraction.getDescription());
+        return updated ? ResponseEntity.ok("Attraktionen blev opdateret.") : ResponseEntity.notFound().build();
     }
 
     //Sletter en attraktion. (Post metoden)

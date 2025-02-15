@@ -1,0 +1,36 @@
+.header1 {
+    font-family: Pristina, sans-serif;
+    color: cornflowerblue;
+    width: auto;
+    font-size: 50px;
+}
+
+.paragraph {
+    font-family: "Javanese Text", sans-serif;
+    font-size: 30px;
+    color: lightseagreen;
+}
+
+.image {
+    position: page;
+    top: 50px;
+    left: 10px;
+    width: 40%;
+    height: 40%;
+    z-index: -1;
+}
+
+.text {
+    font-family: "HoloLens MDL2 Assets", sans-serif;
+    font-size: 30px;
+    color: black;
+}
+
+.nav {
+    font-size: 25px;
+}
+
+.footer {
+    font-family: cursive, sans-serif;
+    font-size: 25px;
+}
