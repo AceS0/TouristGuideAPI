@@ -1,10 +1,8 @@
 package tourism.controller;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.HandlerMapping;
 import tourism.model.TouristAttraction;
 import tourism.service.TouristService;
 
@@ -14,11 +12,10 @@ import java.util.List;
 @RequestMapping("/attractions")
 public class TouristController {
     private final TouristService touristService;
-    private final HandlerMapping resourceHandlerMapping;
 
-    public TouristController(TouristService touristService, @Qualifier("resourceHandlerMapping") HandlerMapping resourceHandlerMapping){
+
+    public TouristController(TouristService touristService){
         this.touristService = touristService;
-        this.resourceHandlerMapping = resourceHandlerMapping;
     }
 
     //Henter hele listen for attraktioner. (Get metoden)
