@@ -49,7 +49,7 @@ public class TouristController {
         return updated ? ResponseEntity.ok("Attraktionen blev opdateret.") : ResponseEntity.notFound().build();
     }
 
-    //Sletter en attraktion. (Post metoden)
+    //Sletter en attraktion. (Post metoden) ..
     @PostMapping("/delete/{name}")
     public ResponseEntity<String> deleteAttraction(@PathVariable String name){
         boolean deleted = touristService.deleteAttraction(name);
