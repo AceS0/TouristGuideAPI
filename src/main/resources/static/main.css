@@ -1,0 +1,27 @@
+.header1 {
+    font-family: Pristina, sans-serif;
+    color: cornflowerblue;
+    width: auto;
+    font-size: 50px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.th, .td {
+    border: 2px solid black;
+    padding: 8px;
+    text-align: left;
+    font-family: cursive, sans-serif;
+}
+
+.th {
+    background-color: #f4f4f4;
+}
+
+.td {
+    color: lightseagreen;
+}
+
