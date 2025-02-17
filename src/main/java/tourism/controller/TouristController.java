@@ -32,7 +32,7 @@ public class TouristController {
         return (attraction != null) ? ResponseEntity.ok(attraction) : ResponseEntity.notFound().build();
     }
 
-    //Tilføjer en ny attraktion. (Post metoden)
+    //Tilføjer en ny attraktion. (Post metoden)..
     @PostMapping("/add")
     public ResponseEntity<String> addAttraction(@RequestBody TouristAttraction attraction){
         touristService.addAttraction(attraction);
