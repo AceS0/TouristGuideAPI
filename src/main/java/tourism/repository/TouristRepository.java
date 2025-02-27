@@ -4,7 +4,9 @@ import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class TouristRepository {
@@ -76,5 +78,21 @@ public class TouristRepository {
 
         }
         return false;
+    }
+
+    public List<String> getCities() {
+        Set<String> uniqueCities = new HashSet<>();
+        for (TouristAttraction attraction : attractions) {
+            uniqueCities.add(attraction.getCity());
+        }
+        return new ArrayList<>(uniqueCities);
+    }
+
+    public List<String> getTags() {
+        Set<String> uniqueTags = new HashSet<>();
+        for(TouristAttraction attraction : attractions) {
+            uniqueTags.add(attraction.getTags());
+        }
+        return new ArrayList<>(uniqueTags);
     }
 }

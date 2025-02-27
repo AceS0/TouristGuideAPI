@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tourism.model.TouristAttraction;
+import tourism.repository.TouristRepository;
 import tourism.service.TouristService;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class TouristController {
     @GetMapping
     public String viewAttractions(Model model){
         model.addAttribute("attractions", touristService.getAllAttractions());
-        return "attractionList.html";
+        return "attractionList";
     }
 
     //Henter en attraktion baseret på navn. (Get metoden)
@@ -46,9 +47,16 @@ public class TouristController {
 
     @GetMapping("/add")
     public String showAddAttractionForm(Model model){
-        List<String> cities = List.of();
-        model.addAttribute("cities",cities);
-       return "add-attraction.html";
+        TouristAttraction attraction = new TouristAttraction();
+
+        // Tilføjer det tomme objekt til modellen
+        model.addAttribute("attraction", attraction);
+
+        // Henter og tilføjer lister af byer og tags til modellen
+        model.addAttribute("cities", touristService.);
+        model.addAttribute("availableTags", repository.getTags());
+
+        return "addAttraction";
     }
 
     //Tilføjer en ny attraktion. (Post metoden)
