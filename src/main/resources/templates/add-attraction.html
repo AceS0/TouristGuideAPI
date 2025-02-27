@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Add an attraction</title>
+</head>
+<body>
+<h1 class="header1">Tilføj turistattraktion</h1>
+<form action="/attractions/add" method="post">
+    <label for="name">Navn:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <label for="description">Beskrivelse:</label>
+    <textarea id="description" name="description" required></textarea>
+    <br>
+    <label for="city">City:</label>
+    <select id="city" name="city" required>
+        <option value="" disabled selected>-- Vælg en by --</option>
+        <option th:each="city : ${cities}" th:value="${city}" th:text="${city}"></option>
+    </select>
+    <br>
+
+    <button type="submit">Tilføj</button>
+</form>
+</body>
+</html>

@@ -44,11 +44,18 @@ public class TouristController {
         }
     }
 
+    @GetMapping("/add")
+    public String showAddAttractionForm(Model model){
+        List<String> cities = List.of();
+        model.addAttribute("cities",cities);
+       return "add-attraction.html";
+    }
+
     //Tilføjer en ny attraktion. (Post metoden)
     @PostMapping("/add")
-    public ResponseEntity<String> addAttraction(@RequestBody TouristAttraction attraction){
-        touristService.addAttraction(attraction);
-        return ResponseEntity.ok("Attraktionen blev tilføjet.");
+    public String addAttraction(@RequestParam String name, @RequestParam String description, @RequestParam String city, @RequestParam List<String> tags){
+        touristService.addAttraction(new TouristAttraction(name,description,city,tags));
+        return "redirect:/attractions";
     }
 
     //Opdaterer en attraktion. (Post metoden)
