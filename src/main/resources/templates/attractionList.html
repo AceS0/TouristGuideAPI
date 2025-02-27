@@ -13,18 +13,23 @@
   <tr>
     <th class="th">Navn</th>
     <th class="th">Beskrivelse</th>
+    <th class="th">By</th>
   </tr>
   <tr th:each="attraction : ${attractions}">
     <td class="td" th:text="${attraction.name}"></td>
     <td class="td" th:text="${attraction.description}"></td>
+    <td class="td" th:text="${attraction.city}"></td>
     <td>
       <a class="links-button" th:href="@{'/attractions/' + ${attraction.name} + '/tags'}">Tags</a>
       <a class="links-button" th:href="@{'/attractions/' + ${attraction.name} + '/edit'}">Rediger</a>
-      <a class="links-button" th:href="@{'/attractions/' + ${attraction.name} + '/delete'}">Slet</a>
+        <form th:action="@{'/attractions/' + ${attraction.name} + '/delete'}" method="post" style="display: inline">
+            <button class="links-buttondelete" type="submit">
+                Slet
+            </button>
+        </form>
     </td>
   </tr>
 </table>
-<a class="addbutton" href="/add">Tilføj ny attraktion</a>
-
+<a class="addbutton" href="/attractions/add">Tilføj ny attraktion</a>
 </body>
 </html>

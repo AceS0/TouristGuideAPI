@@ -80,6 +80,7 @@ public class TouristRepository {
         return false;
     }
 
+    //Henter alle byerne i de forskellige attraktioner og gøre det til valgmuligheder.
     public List<String> getCities() {
         Set<String> uniqueCities = new HashSet<>();
         for (TouristAttraction attraction : attractions) {
@@ -88,10 +89,11 @@ public class TouristRepository {
         return new ArrayList<>(uniqueCities);
     }
 
+    //Samme som byerne men bare i forhold til tags.
     public List<String> getTags() {
         Set<String> uniqueTags = new HashSet<>();
         for(TouristAttraction attraction : attractions) {
-            uniqueTags.add(attraction.getTags());
+            uniqueTags.addAll(attraction.getTags());
         }
         return new ArrayList<>(uniqueTags);
     }
