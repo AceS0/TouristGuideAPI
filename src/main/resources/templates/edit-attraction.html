@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Rediger Turistattraktion</title>
+</head>
+<body>
+<h1>Rediger Turistattraktion</h1>
+
+<form th:action="@{/attractions/update}" th:object="${attraction}" method="post">
+    <div>
+        <label for="name">Navn:</label>
+        <input type="text" id="name" th:field="*{name}" readonly="readonly" />
+    </div>
+    <div>
+        <label for="description">Beskrivelse:</label>
+        <textarea id="description" th:field="*{description}" rows="5" style="width: 100%;"></textarea>
+    </div>
+    <div>
+        <label for="city">By:</label>
+        <select id="city" th:field="*{city}">
+            <option th:each="cityOption : ${cities}"
+                    th:value="${cityOption}"
+                    th:text="${cityOption}"></option>
+        </select>
+    </div>
+    <div>
+        <label>Tags:</label>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; max-width: 600px;">
+            <div th:each="tag : ${availableTags}" style="width: 25%;">
+                <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${'tag-' + tag}">
+                <label th:for="${'tag-' + tag}" th:text="${tag}"></label>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <button type="submit">Opdater</button>
+        <a th:href="@{/attractions}">Annuller</a>
+    </div>
+</form>
+</body>
+</html>

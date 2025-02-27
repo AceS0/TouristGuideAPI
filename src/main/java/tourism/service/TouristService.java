@@ -39,5 +39,14 @@ public class TouristService {
         return touristRepository.deleteAttraction(name);
     }
 
+    //Henter alle byer og returnerer dem.
+    public List<String> getAllCities(){
+        return touristRepository.getCities();
+    }
+
+    //Henter alle tags og returnerer dem.
+    public List<String> getAllTags(){
+        return touristRepository.getTags();
+    }
 
 }

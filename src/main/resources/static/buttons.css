@@ -1,0 +1,97 @@
+.list {
+    background-color: oldlace;
+    color: burlywood;
+    border: 2px solid burlywood;
+    padding: 8px;
+    text-align: left;
+    width: 10%;
+    font-family: cursive, sans-serif;
+}
+
+.button {
+    background-color: lightseagreen;
+    color: black;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: normal;
+    font-family: "Goudy Old Style", sans-serif;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-block;
+    position: fixed;
+    top: 300px;
+    left: 40px;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+.links-button {
+    background-color: lightseagreen;
+    color: black;
+    padding: 5px 10px;
+    font-size: 16px;
+    font-weight: normal;
+    font-family: "Goudy Old Style", sans-serif;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    gap: 5px;
+}
+
+.links-buttondelete {
+    background-color: #db4f4f;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Roboto Slab', serif;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    gap: 5px;
+}
+
+.addbutton {
+    background-color: lightseagreen;
+    color: black;
+    padding: 5px 5px;
+    font-size: 16px;
+    font-weight: normal;
+    font-family: "Goudy Old Style", sans-serif;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.back-to-list-button {
+    background-color: oldlace;
+    color: burlywood;
+    padding: 5px 5px;
+    font-size: 16px;
+    font-weight: normal;
+    font-family: "Goudy Old Style", sans-serif;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.text {
+    font-family: "Javanese Text", sans-serif;
+    background-color: oldlace;
+    font-size: 20px;
+    padding: 5px 5px;
+    border: none;
+    border-radius: 3px;
+    color: burlywood;
+    display: inline-block;
+}

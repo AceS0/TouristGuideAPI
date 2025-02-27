@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Tilføj Turistattraktion</title>
+    <link th:href="@{/main.css}" rel="stylesheet">
+</head>
+<body>
+    <h1 class="header1">Tilføj ny turistattraktion</h1>
+
+    <form action="#" th:action="@{/attractions/save}" th:object="${attraction}" method="post">
+        <div>
+            <label for="name">Navn:</label>
+            <input type="text" id="name" th:field="*{name}" required>
+        </div>
+        <div>
+            <label for="description">Beskrivelse:</label>
+            <input type="text" id="description" th:field="*{description}" required>
+        </div>
+        <div>
+            <label for="city">By:</label>
+            <select id="city" th:field="*{city}" required>
+                <option value="" disabled selected>-- Vælg en by --</option>
+                <option th:each="city : ${cities}" th:value="${city}" th:text="${city}"></option>
+            </select>
+        </div>
+        <div>
+            <label>Tags:</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; max-width: 600px;">
+                <div th:each="tag : ${availableTags}" style="width: 25%;">
+                    <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${'tag-' + tag}">
+                    <label th:for="${'tag-' + tag}" th:text="${tag}"></label>
+                </div>
+            </div>
+        </div>
+        <div class="button-group">
+            <button type="submit">Gem</button>
+            <a th:href="@{/attractions}" class="button">Annuller</a>
+        </div>
+    </form>
+</body>
+</html>

@@ -4,22 +4,37 @@ import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class TouristRepository {
-    private final List<TouristAttraction> attractions = new ArrayList<>();
+    private final List<TouristAttraction> attractions
+            = new ArrayList<>(List.of(
+            new TouristAttraction("CopenHill",
+                    "En urban skibakke og aktivitetspark på taget af et forbrændingsanlæg, hvor man kan stå på ski, løbe eller nyde panoramaudsigten over København.",
+                    "København",
+                    List.of("Sport", "Udendørs", "Eventyr", "Udsigt")
+            ),
+            new TouristAttraction("Reffen Street Food",
+                    "En kreativ mad- og kulturhub i København, hvor unge kan smage internationale retter, lytte til livemusik og opleve en afslappet street food-atmosfære.",
+                    "København",
+                    List.of("Mad", "Street Food", "Kultur", "Socialt")
+            ),
+            new TouristAttraction("FÆNGSLET",
+                    "Et tidligere fængsel i Horsens, omdannet til museum, koncertsted og eventlokale, hvor man kan opleve autentiske celler, spændende historie og escape room-udfordringer.",
+                    "Horsens",
+                    List.of("Historie", "Museum", "Escape Room", "Koncerter")
+            ),
+            new TouristAttraction("Aarhus Festuge",
+                    "En årlig kulturfestival i Aarhus, der byder på alt fra koncerter og kunstinstallationer til teater og debatter, skabt for at samle unge og kreative sjæle.",
+                    "Aarhus",
+                    List.of("Festival", "Kultur", "Musik", "Kunst")
+            )
+    ));
 
     public TouristRepository(){
-
-        attractions.add(new TouristAttraction("CopenHill","En urban skibakke og aktivitetspark på taget af et forbrændingsanlæg, " +
-                "hvor man kan stå på ski, løbe eller nyde panoramaudsigten over København."));
-        attractions.add(new TouristAttraction("Reffen Street Food","En kreativ mad- og kulturhub i København, hvor unge kan smage internationale retter, " +
-                "lytte til livemusik og opleve en afslappet street food-atmosfære."));
-        attractions.add(new TouristAttraction("FÆNGSLET","Et tidligere fængsel i Horsens, omdannet til museum," +
-                " koncertsted og eventlokale, hvor man kan opleve autentiske celler, spændende historie og escape room-udfordringer"));
-        attractions.add(new TouristAttraction("Aarhus Festuge","En årlig kulturfestival i Aarhus, der byder på alt fra koncerter " +
-                "og kunstinstallationer til teater og debatter, skabt for at samle unge og kreative sjæle."));
     }
 
     //Tilføjer en attraktion til Arraylisten. (Create funktion)
@@ -63,5 +78,23 @@ public class TouristRepository {
 
         }
         return false;
+    }
+
+    //Henter alle byerne i de forskellige attraktioner og gøre det til valgmuligheder.
+    public List<String> getCities() {
+        Set<String> uniqueCities = new HashSet<>();
+        for (TouristAttraction attraction : attractions) {
+            uniqueCities.add(attraction.getCity());
+        }
+        return new ArrayList<>(uniqueCities);
+    }
+
+    //Samme som byerne men bare i forhold til tags.
+    public List<String> getTags() {
+        Set<String> uniqueTags = new HashSet<>();
+        for(TouristAttraction attraction : attractions) {
+            uniqueTags.addAll(attraction.getTags());
+        }
+        return new ArrayList<>(uniqueTags);
     }
 }
