@@ -1,5 +1,7 @@
 package tourism.repository;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 
@@ -10,55 +12,32 @@ import java.util.Set;
 
 @Repository
 public class TouristRepository {
-    private final List<TouristAttraction> attractions
-            = new ArrayList<>(List.of(
-            new TouristAttraction("CopenHill",
-                    "En urban skibakke og aktivitetspark på taget af et forbrændingsanlæg, hvor man kan stå på ski, løbe eller nyde panoramaudsigten over København.",
-                    "København",
-                    List.of("Sport", "Udendørs", "Eventyr", "Udsigt")
-            ),
-            new TouristAttraction("Reffen Street Food",
-                    "En kreativ mad- og kulturhub i København, hvor unge kan smage internationale retter, lytte til livemusik og opleve en afslappet street food-atmosfære.",
-                    "København",
-                    List.of("Mad", "Street Food", "Kultur", "Socialt")
-            ),
-            new TouristAttraction("FÆNGSLET",
-                    "Et tidligere fængsel i Horsens, omdannet til museum, koncertsted og eventlokale, hvor man kan opleve autentiske celler, spændende historie og escape room-udfordringer.",
-                    "Horsens",
-                    List.of("Historie", "Museum", "Escape Room", "Koncerter")
-            ),
-            new TouristAttraction("Aarhus Festuge",
-                    "En årlig kulturfestival i Aarhus, der byder på alt fra koncerter og kunstinstallationer til teater og debatter, skabt for at samle unge og kreative sjæle.",
-                    "Aarhus",
-                    List.of("Festival", "Kultur", "Musik", "Kunst")
-            )
-    ));
+    private final JdbcTemplate jdbcTemplate;
 
-    public TouristRepository(){
+    public TouristRepository(JdbcTemplate jdbcTemplate){
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     //Tilføjer en attraktion til Arraylisten. (Create funktion)
     public void addAttraction(TouristAttraction attraction){
-        attractions.add(attraction);
+        String sql = "INSERT INTO tourist_attractions (name, description, city) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, attraction.getName(), attraction.getDescription(), attraction.getCity());
     }
 
     //Lister alle attraktioner. (Read funktion)
     public List<TouristAttraction> getAllAttractions() {
-        return new ArrayList<>(attractions);
+        String sql = "SELECT * FROM tourist_attractions";
+        return jdbcTemplate.query(sql,mapAttraction());
     }
 
     //Henter en attraktion ud fra navnet. (Read funktion)
     public TouristAttraction getAttractionByName(String name){
-        for (TouristAttraction attraction : attractions){
-            if (attraction.getName().equalsIgnoreCase(name)){
-                return attraction;
-            }
-        }
-        return null;
+        String sql = "SELECT * FROM tourist_attractions WHERE name = ?";
+        return jdbcTemplate.queryForObject(sql, mapAttraction(), name);
     }
 
     //Opdaterer en attraktion hvis der opstår eksempelvis ny information eller mangler rettelser. (Update funktion)
-    public boolean updateAttraction(String name, String updateDesc){
+   /* public boolean updateAttraction(String name, String updateDesc){
         for (TouristAttraction attraction : attractions){
             if (attraction.getName().equalsIgnoreCase(name)){
                 attraction.setDescription(updateDesc);
@@ -66,22 +45,17 @@ public class TouristRepository {
             }
         }
         return false;
-    }
+    }*/
 
     //Sletter en attraktion. (Delete funktion)
     public boolean deleteAttraction(String name){
-        for (int i = 0; i < attractions.size(); i++){
-            if(attractions.get(i).getName().equalsIgnoreCase(name)){
-                attractions.remove(i);
-                return true;
-            }
-
-        }
+        String sql = "DELETE FROM tourist_attractions WHERE name = ?";
+        jdbcTemplate.update(sql, name);
         return false;
     }
 
     //Henter alle byerne i de forskellige attraktioner og gøre det til valgmuligheder.
-    public List<String> getCities() {
+   /* public List<String> getCities() {
         Set<String> uniqueCities = new HashSet<>();
         for (TouristAttraction attraction : attractions) {
             uniqueCities.add(attraction.getCity());
@@ -96,5 +70,14 @@ public class TouristRepository {
             uniqueTags.addAll(attraction.getTags());
         }
         return new ArrayList<>(uniqueTags);
+    }*/
+
+    private RowMapper<TouristAttraction> mapAttraction() {
+        return (rs, rowNum) -> new TouristAttraction(
+                rs.getString("name"),
+                rs.getString("description"),
+                rs.getString("city"),
+                List.of() // Tags håndteres separat
+        );
     }
 }
