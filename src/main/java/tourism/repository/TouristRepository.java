@@ -1,5 +1,7 @@
 package tourism.repository;
 
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,9 +21,14 @@ public class TouristRepository {
     }
 
     //Tilføjer en attraktion til Arraylisten. (Create funktion)
-    public void addAttraction(TouristAttraction attraction){
-        String sql = "INSERT INTO tourist_attractions (name, description, city) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, attraction.getName(), attraction.getDescription(), attraction.getCity());
+    public boolean addAttraction(TouristAttraction attraction){
+        try {
+            String sql = "INSERT INTO tourist_attractions (name, description, city) VALUES (?, ?, ?)";
+            jdbcTemplate.update(sql, attraction.getName(), attraction.getDescription(), attraction.getCity());
+            return true;
+        } catch (DuplicateKeyException e) {
+            return false;
+        }
     }
 
     //Lister alle attraktioner. (Read funktion)
@@ -32,15 +39,19 @@ public class TouristRepository {
 
     //Henter en attraktion ud fra navnet. (Read funktion)
     public TouristAttraction getAttractionByName(String name){
-        String sql = "SELECT * FROM tourist_attractions WHERE name = ?";
-        TouristAttraction attraction = jdbcTemplate.queryForObject(sql, mapAttraction(), name);
+        try {
+            String sql = "SELECT * FROM tourist_attractions WHERE name = ?";
+            TouristAttraction attraction = jdbcTemplate.queryForObject(sql, mapAttraction(), name);
 
-        if (attraction != null) {
-            String tagSql = "SELECT tag FROM attraction_tags WHERE attraction_id = (SELECT id FROM tourist_attractions WHERE name = ?)";
-            List<String> tags = jdbcTemplate.queryForList(tagSql, String.class, name);
-            attraction.setTags(tags);
+            if (attraction != null) {
+                String tagSql = "SELECT tag FROM attraction_tags WHERE attraction_id = (SELECT id FROM tourist_attractions WHERE name = ?)";
+                List<String> tags = jdbcTemplate.queryForList(tagSql, String.class, name);
+                attraction.setTags(tags);
+            }
+            return attraction;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         }
-        return attraction;
     }
 
     //Opdaterer en attraktion hvis der opstår eksempelvis ny information eller mangler rettelser. (Update funktion)
@@ -53,8 +64,8 @@ public class TouristRepository {
     //Sletter en attraktion. (Delete funktion)
     public boolean deleteAttraction(String name){
         String sql = "DELETE FROM tourist_attractions WHERE name = ?";
-        jdbcTemplate.update(sql, name);
-        return false;
+        int rowsAffected = jdbcTemplate.update(sql, name);
+        return rowsAffected > 0;
     }
 
     //Henter alle byerne i de forskellige attraktioner og gøre det til valgmuligheder.
