@@ -33,19 +33,22 @@ public class TouristRepository {
     //Henter en attraktion ud fra navnet. (Read funktion)
     public TouristAttraction getAttractionByName(String name){
         String sql = "SELECT * FROM tourist_attractions WHERE name = ?";
-        return jdbcTemplate.queryForObject(sql, mapAttraction(), name);
+        TouristAttraction attraction = jdbcTemplate.queryForObject(sql, mapAttraction(), name);
+
+        if (attraction != null) {
+            String tagSql = "SELECT tag FROM attraction_tags WHERE attraction_id = (SELECT id FROM tourist_attractions WHERE name = ?)";
+            List<String> tags = jdbcTemplate.queryForList(tagSql, String.class, name);
+            attraction.setTags(tags);
+        }
+        return attraction;
     }
 
     //Opdaterer en attraktion hvis der opstår eksempelvis ny information eller mangler rettelser. (Update funktion)
-   /* public boolean updateAttraction(String name, String updateDesc){
-        for (TouristAttraction attraction : attractions){
-            if (attraction.getName().equalsIgnoreCase(name)){
-                attraction.setDescription(updateDesc);
-                return true;
-            }
-        }
-        return false;
-    }*/
+    public boolean updateAttraction(String name, String updateDesc) {
+        String sql = "UPDATE tourist_attractions SET description = ? WHERE name = ?";
+        int rowsAffected = jdbcTemplate.update(sql, updateDesc, name);
+        return rowsAffected > 0;
+    }
 
     //Sletter en attraktion. (Delete funktion)
     public boolean deleteAttraction(String name){
@@ -55,22 +58,16 @@ public class TouristRepository {
     }
 
     //Henter alle byerne i de forskellige attraktioner og gøre det til valgmuligheder.
-   /* public List<String> getCities() {
-        Set<String> uniqueCities = new HashSet<>();
-        for (TouristAttraction attraction : attractions) {
-            uniqueCities.add(attraction.getCity());
-        }
-        return new ArrayList<>(uniqueCities);
+    public List<String> getCities() {
+        String sql = "SELECT DISTINCT city FROM tourist_attractions";
+        return jdbcTemplate.queryForList(sql, String.class);
     }
 
     //Samme som byerne men bare i forhold til tags.
     public List<String> getTags() {
-        Set<String> uniqueTags = new HashSet<>();
-        for(TouristAttraction attraction : attractions) {
-            uniqueTags.addAll(attraction.getTags());
-        }
-        return new ArrayList<>(uniqueTags);
-    }*/
+        String sql = "SELECT DISTINCT tag FROM attraction_tags";
+        return jdbcTemplate.queryForList(sql, String.class);
+    }
 
     private RowMapper<TouristAttraction> mapAttraction() {
         return (rs, rowNum) -> new TouristAttraction(

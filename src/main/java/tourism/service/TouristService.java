@@ -40,7 +40,7 @@ public class TouristService {
     }
 
     //Henter alle byer og returnerer dem.
-    public List<String> getAllCities(){
+   public List<String> getAllCities(){
         return touristRepository.getCities();
     }
 
