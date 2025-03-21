@@ -5,10 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tourism.model.TouristAttraction;
-import tourism.repository.TouristRepository;
 import tourism.service.TouristService;
 
-import java.util.List;
 
 @Controller
 @RequestMapping("")
@@ -42,7 +40,7 @@ public class TouristController {
             model.addAttribute("attraction",attraction);
             return "tags";
         } else {
-            return "error";
+            return null;
         }
     }
 
@@ -81,7 +79,7 @@ public class TouristController {
 
             return "edit-attraction";  // Henviser til Thymeleaf-skabelonen "edit-attraction.html"
         } else {
-            return "error"; // Hvis attraktionen ikke findes, kan du vise en fejl-HTML eller lignende
+            return null; // Hvis attraktionen ikke findes, kan du vise en fejl-HTML eller lignende
         }
     }
 
@@ -98,7 +96,7 @@ public class TouristController {
 
             return "redirect:/attractions";
         } else {
-            return "error";
+            return null;
         }
     }
 
@@ -109,7 +107,7 @@ public class TouristController {
         if (deleted) {
             return "redirect:/attractions";
         } else {
-            return "error";
+            return null;
         }
     }
 }
