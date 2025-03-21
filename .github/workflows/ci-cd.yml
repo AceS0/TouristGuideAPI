@@ -20,6 +20,10 @@ jobs:
 
       - name: Byg med Maven
         env:
+          DEV_DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+          DEV_USERNAME: ${{ secrets.DEV_USERNAME }}
+          DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
+          
           PROD_DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
           PROD_USERNAME: ${{ secrets.PROD_USERNAME }}
           PROD_PASSWORD: ${{ secrets.PROD_PASSWORD }}
