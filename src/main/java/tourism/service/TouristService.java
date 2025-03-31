@@ -30,8 +30,8 @@ public class TouristService {
     }
 
     //Opdaterer en attraktion igennem touristRepository. (Update funktion)
-    public boolean updateAttraction(String name, String updateDesc){
-        return touristRepository.updateAttraction(name,updateDesc);
+    public boolean updateAttraction(TouristAttraction updatedAttraction) {
+        return touristRepository.updateAttraction(updatedAttraction);
     }
 
     //Sletter en attraktion igennem touristRepository. (Delete funktion)

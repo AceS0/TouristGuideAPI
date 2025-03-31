@@ -86,18 +86,8 @@ public class TouristController {
     //Opdaterer en attraktion. (Post metoden)
     @PostMapping("/attractions/update")
     public String updateAttraction(@ModelAttribute TouristAttraction updatedAttraction) {
-        //Her henter du den eksisterende attraktion (baseret på navn)
-        TouristAttraction existing = touristService.getAttractionByName(updatedAttraction.getName());
-        if (existing != null) {
-
-            existing.setDescription(updatedAttraction.getDescription());
-            existing.setCity(updatedAttraction.getCity());
-            existing.setTags(updatedAttraction.getTags());
-
-            return "redirect:/attractions";
-        } else {
-            return null;
-        }
+        touristService.updateAttraction(updatedAttraction);
+        return "redirect:/attractions";
     }
 
     //Sletter en attraktion. (Post metoden)

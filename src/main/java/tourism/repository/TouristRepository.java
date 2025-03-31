@@ -18,10 +18,23 @@ public class TouristRepository {
     }
 
     //Tilføjer en attraktion til Arraylisten. (Create funktion)
-    public boolean addAttraction(TouristAttraction attraction){
+    public boolean addAttraction(TouristAttraction attraction) {
         try {
+            // Indsæt attraktionen
             String sql = "INSERT INTO tourist_attractions (name, description, city) VALUES (?, ?, ?)";
             jdbcTemplate.update(sql, attraction.getName(), attraction.getDescription(), attraction.getCity());
+
+            // Hent ID'et på den nyoprettede attraktion
+            String idSql = "SELECT id FROM tourist_attractions WHERE name = ?";
+            Integer attractionId = jdbcTemplate.queryForObject(idSql, Integer.class, attraction.getName());
+
+            if (attractionId != null) {
+                // Indsæt tags
+                String tagSql = "INSERT INTO attraction_tags (attraction_id, tag) VALUES (?, ?)";
+                for (String tag : attraction.getTags()) {
+                    jdbcTemplate.update(tagSql, attractionId, tag);
+                }
+            }
             return true;
         } catch (DuplicateKeyException e) {
             return false;
@@ -52,10 +65,23 @@ public class TouristRepository {
     }
 
     //Opdaterer en attraktion hvis der opstår eksempelvis ny information eller mangler rettelser. (Update funktion)
-    public boolean updateAttraction(String name, String updateDesc) {
-        String sql = "UPDATE tourist_attractions SET description = ? WHERE name = ?";
-        int rowsAffected = jdbcTemplate.update(sql, updateDesc, name);
-        return rowsAffected > 0;
+    public boolean updateAttraction(TouristAttraction updatedAttraction) {
+        String sql = "UPDATE tourist_attractions SET description = ?, city = ? WHERE name = ?";
+        int rowsAffected = jdbcTemplate.update(sql, updatedAttraction.getDescription(), updatedAttraction.getCity(), updatedAttraction.getName());
+
+        if (rowsAffected > 0) {
+            // Slet de gamle tags
+            String deleteTagsSql = "DELETE FROM attraction_tags WHERE attraction_id = (SELECT id FROM tourist_attractions WHERE name = ?)";
+            jdbcTemplate.update(deleteTagsSql, updatedAttraction.getName());
+
+            // Tilføj de nye tags
+            String insertTagSql = "INSERT INTO attraction_tags (attraction_id, tag) VALUES ((SELECT id FROM tourist_attractions WHERE name = ?), ?)";
+            for (String tag : updatedAttraction.getTags()) {
+                jdbcTemplate.update(insertTagSql, updatedAttraction.getName(), tag);
+            }
+            return true;
+        }
+        return false;
     }
 
     //Sletter en attraktion. (Delete funktion)
