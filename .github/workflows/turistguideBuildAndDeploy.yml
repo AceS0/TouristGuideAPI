@@ -6,7 +6,7 @@ name: Build and deploy JAR app to Azure Web App - Springappdemos
 on:
   push:
     branches:
-      - Abduldel3
+      - main
   workflow_dispatch:
 
 jobs:
