@@ -24,7 +24,7 @@ public class TouristRepository {
             String sql = "INSERT INTO tourist_attractions (name, description, city) VALUES (?, ?, ?)";
             jdbcTemplate.update(sql, attraction.getName(), attraction.getDescription(), attraction.getCity());
 
-            // Hent ID'et på den nyoprettede attraktion
+            // Hent ID på den nyoprettede attraktion
             String idSql = "SELECT id FROM tourist_attractions WHERE name = ?";
             Integer attractionId = jdbcTemplate.queryForObject(idSql, Integer.class, attraction.getName());
 
